@@ -1,98 +1,96 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+export default function Dashboard() {
+    // Shared styles to keep code clean
+    const cardShadow = {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 5,
+    };
 
-export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Annyeong!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#f9fafb' }} edges={['left', 'right']}>
+            <ScrollView 
+                contentContainerStyle={{ 
+                    alignItems: 'center', 
+                    paddingVertical: 40,
+                    paddingHorizontal: 20 
+                }}
+            >
+                
+                {/* 1. NEW TRANSACTION CARD */}
+                <View style={{ width: '100%', maxWidth: 900, marginBottom: 40 }}>
+                    <TouchableOpacity 
+                        style={{ 
+                            backgroundColor: '#1F305E', 
+                            padding: 50, 
+                            borderRadius: 40,
+                            flexDirection: 'row', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            ...cardShadow
+                        }}
+                        activeOpacity={0.9}
+                    >
+                        <Ionicons name="cart" size={60} color="white" />
+                        <View style={{ marginLeft: 24 }}>
+                            <Text style={{ color: 'white', fontSize: 36, fontWeight: '900', textTransform: 'uppercase' }}>
+                                New Transaction
+                            </Text>
+                            <Text style={{ color: '#bfdbfe', fontSize: 18, opacity: 0.8 }}>
+                                Tap here to start a new sale
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+                {/* 2. DAILY SUMMARY */}
+                <View style={{ width: '100%', maxWidth: 900 }}>
+                    <Text style={{ color: '#1f305e', fontSize: 24, fontWeight: '900', marginBottom: 24, marginLeft: 8, textTransform: 'uppercase' }}>
+                        Daily Summary
+                    </Text>
+                    
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                        
+                        {/* Summary Card Logic */}
+                        {[
+                            { label: 'Total Sales', value: '₱0', icon: 'cash' },
+                            { label: 'Transactions', value: '0', icon: 'receipt' },
+                            { label: 'Items Sold', value: '0', icon: 'cube' }
+                        ].map((item, index) => (
+                            <View 
+                                key={index}
+                                style={{ 
+                                    backgroundColor: 'white', 
+                                    padding: 35, 
+                                    borderRadius: 30, // Direct Fix
+                                    width: '31%', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    borderWidth: 1,
+                                    borderColor: '#f1f5f9',
+                                    ...cardShadow
+                                }}
+                            >
+                                <View style={{ backgroundColor: '#f0f4ff', padding: 16, borderRadius: 100, marginBottom: 16 }}>
+                                    <Ionicons name={item.icon as any} size={32} color="#1f305e" />
+                                </View>
+                                <Text style={{ color: '#94a3b8', fontWeight: 'bold', fontSize: 12, textTransform: 'uppercase' }}>
+                                    {item.label}
+                                </Text>
+                                <Text style={{ color: '#1f305e', fontSize: 32, fontWeight: '900', marginTop: 4 }}>
+                                    {item.value}
+                                </Text>
+                            </View>
+                        ))}
+                    </View>
+                </View>
+
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
