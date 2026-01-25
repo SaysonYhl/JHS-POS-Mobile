@@ -1,44 +1,24 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { GlobalStyles, COLORS } from '@/constants/theme';
 
 export default function Dashboard() {
-    // Shared styles to keep code clean
-    const cardShadow = {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        elevation: 5,
-    };
-
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#f9fafb' }} edges={['left', 'right']}>
+        <SafeAreaView style={GlobalStyles.screenContainer} edges={['left', 'right']}>
             <ScrollView 
-                contentContainerStyle={{ 
-                    alignItems: 'center', 
-                    paddingVertical: 40,
-                    paddingHorizontal: 20 
-                }}
+                contentContainerStyle={GlobalStyles.tabletCenterWrapper}
             >
                 
                 {/* 1. NEW TRANSACTION CARD */}
                 <View style={{ width: '100%', maxWidth: 900, marginBottom: 40 }}>
                     <TouchableOpacity 
-                        style={{ 
-                            backgroundColor: '#1F305E', 
-                            padding: 50, 
-                            borderRadius: 40,
-                            flexDirection: 'row', 
-                            alignItems: 'center', 
-                            justifyContent: 'center',
-                            ...cardShadow
-                        }}
+                        style={GlobalStyles.primaryActionCard}
                         activeOpacity={0.9}
                     >
-                        <Ionicons name="cart" size={60} color="white" />
+                        <Ionicons name="cart" size={60} color={COLORS.white} />
                         <View style={{ marginLeft: 24 }}>
-                            <Text style={{ color: 'white', fontSize: 36, fontWeight: '900', textTransform: 'uppercase' }}>
+                            <Text style={{ color: COLORS.white, fontSize: 36, fontWeight: '900', textTransform: 'uppercase' }}>
                                 New Transaction
                             </Text>
                             <Text style={{ color: '#bfdbfe', fontSize: 18, opacity: 0.8 }}>
@@ -50,13 +30,12 @@ export default function Dashboard() {
 
                 {/* 2. DAILY SUMMARY */}
                 <View style={{ width: '100%', maxWidth: 900 }}>
-                    <Text style={{ color: '#1f305e', fontSize: 24, fontWeight: '900', marginBottom: 24, marginLeft: 8, textTransform: 'uppercase' }}>
+                    <Text style={GlobalStyles.headerText}>
                         Daily Summary
                     </Text>
                     
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                         
-                        {/* Summary Card Logic */}
                         {[
                             { label: 'Total Sales', value: '₱0', icon: 'cash' },
                             { label: 'Transactions', value: '0', icon: 'receipt' },
@@ -64,25 +43,15 @@ export default function Dashboard() {
                         ].map((item, index) => (
                             <View 
                                 key={index}
-                                style={{ 
-                                    backgroundColor: 'white', 
-                                    padding: 35, 
-                                    borderRadius: 30, // Direct Fix
-                                    width: '31%', 
-                                    alignItems: 'center', 
-                                    justifyContent: 'center',
-                                    borderWidth: 1,
-                                    borderColor: '#f1f5f9',
-                                    ...cardShadow
-                                }}
+                                style={GlobalStyles.summaryCard}
                             >
-                                <View style={{ backgroundColor: '#f0f4ff', padding: 16, borderRadius: 100, marginBottom: 16 }}>
-                                    <Ionicons name={item.icon as any} size={32} color="#1f305e" />
+                                <View style={GlobalStyles.iconCircle}>
+                                    <Ionicons name={item.icon as any} size={32} color={COLORS.navy} />
                                 </View>
-                                <Text style={{ color: '#94a3b8', fontWeight: 'bold', fontSize: 12, textTransform: 'uppercase' }}>
+                                <Text style={GlobalStyles.cardLabel}>
                                     {item.label}
                                 </Text>
-                                <Text style={{ color: '#1f305e', fontSize: 32, fontWeight: '900', marginTop: 4 }}>
+                                <Text style={GlobalStyles.cardValue}>
                                     {item.value}
                                 </Text>
                             </View>
