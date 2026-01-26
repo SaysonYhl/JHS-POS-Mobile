@@ -6,7 +6,9 @@ export const inventoryStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 5,
+        paddingHorizontal: 25,
+        paddingVertical: 5,
     },
     searchContainer: {
         flexDirection: 'row',

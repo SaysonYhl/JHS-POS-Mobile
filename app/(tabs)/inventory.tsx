@@ -127,28 +127,29 @@ export default function InventoryScreen() {
 
     return (
         <SafeAreaView style={GlobalStyles.screenContainer} edges={['left', 'right']}>
-            <ScrollView 
-                contentContainerStyle={{ paddingHorizontal: 25, paddingVertical: 15 }} 
+
+            <View style={inventoryStyles.headerRow}>
+                <Text style={[GlobalStyles.headerText, { marginBottom: 0 }]}>Inventory</Text>
+                <View style={inventoryStyles.searchContainer}>
+                    <Ionicons name="search" size={20} color={COLORS.grayText} style={{ marginLeft: 12 }} />
+                    <TextInput
+                        style={inventoryStyles.searchInput}
+                        placeholder="Search products..."
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                    />
+                    {searchQuery.length > 0 && (
+                        <TouchableOpacity onPress={() => setSearchQuery('')} style={{ marginRight: 10 }}>
+                            <Ionicons name="close-circle" size={18} color={COLORS.grayText} />
+                        </TouchableOpacity>
+                    )}
+                </View>
+            </View>
+
+            <ScrollView
+                contentContainerStyle={{ paddingHorizontal: 25, paddingVertical: 5 }}
                 onScrollBeginDrag={() => setActiveMenuId(null)}
             >
-                <View style={inventoryStyles.headerRow}>
-                    <Text style={[GlobalStyles.headerText, { marginBottom: 0 }]}>Inventory</Text>
-                    <View style={inventoryStyles.searchContainer}>
-                        <Ionicons name="search" size={20} color={COLORS.grayText} style={{ marginLeft: 12 }} />
-                        <TextInput
-                            style={inventoryStyles.searchInput}
-                            placeholder="Search products..."
-                            value={searchQuery}
-                            onChangeText={setSearchQuery}
-                        />
-                        {searchQuery.length > 0 && (
-                            <TouchableOpacity onPress={() => setSearchQuery('')} style={{ marginRight: 10 }}>
-                                <Ionicons name="close-circle" size={18} color={COLORS.grayText} />
-                            </TouchableOpacity>
-                        )}
-                    </View>
-                </View>
-
                 {filteredProducts.length > 0 && (
                     <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: COLORS.grayBorder, marginBottom: 10 }}>
                         <View style={{ width: 65 }} />
@@ -229,14 +230,14 @@ export default function InventoryScreen() {
                 <Ionicons name="add" size={50} color={COLORS.white} />
             </TouchableOpacity>
 
-            <ProductModal 
+            <ProductModal
                 visible={modalVisible} onClose={() => setModalVisible(false)} onSave={handleSave}
                 editingId={editingId} name={name} setName={setName} price={price} setPrice={setPrice}
                 stock={stock} setStock={setStock} weightValue={weightValue} setWeightValue={setWeightValue}
                 weightUnit={weightUnit} setWeightUnit={setWeightUnit}
             />
 
-            <StockAdjustmentModal 
+            <StockAdjustmentModal
                 visible={stockModalVisible} product={selectedProduct} value={quickStockValue}
                 setValue={setQuickStockValue} onSave={saveQuickStock} onClose={() => setStockModalVisible(false)}
             />
