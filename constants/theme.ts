@@ -82,8 +82,7 @@ export const GlobalStyles = StyleSheet.create({
         fontSize: 28,
         fontWeight: '900',
         color: COLORS.navy,
-        textTransform: 'uppercase',
-        letterSpacing: 1,
+        // textTransform: 'uppercase',
         marginBottom: 20,
     },
     cardValue: {

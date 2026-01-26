@@ -2,8 +2,11 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStyles, COLORS } from '@/constants/theme';
+import { useRouter } from 'expo-router';
 
 export default function Dashboard() {
+    const router = useRouter();
+
     return (
         <SafeAreaView style={GlobalStyles.screenContainer} edges={['left', 'right']}>
             <ScrollView 
@@ -15,6 +18,7 @@ export default function Dashboard() {
                     <TouchableOpacity 
                         style={GlobalStyles.primaryActionCard}
                         activeOpacity={0.9}
+                        onPress={() => router.push('/transaction')}
                     >
                         <Ionicons name="cart" size={60} color={COLORS.white} />
                         <View style={{ marginLeft: 24 }}>
