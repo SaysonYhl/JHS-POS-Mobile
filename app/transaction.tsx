@@ -12,6 +12,7 @@ export default function TransactionScreen() {
     const [products, setProducts] = useState<any[]>([]);
     const [cart, setCart] = useState<any[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [discount, setDiscount] = useState(0);
 
     useEffect(() => {
         loadProducts();
@@ -58,6 +59,7 @@ export default function TransactionScreen() {
     };
 
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    // const finalTotal = Math.max(0, subtotal - discount);
 
     const filteredProducts = products.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -65,7 +67,7 @@ export default function TransactionScreen() {
 
     return (
         <SafeAreaView style={transactionStyles.container} edges={['bottom']}>
-            {/* 1. REFINED HEADER */}
+            {/* 1. HEADER */}
             <View style={transactionStyles.header}>
                 <View style={transactionStyles.headerLeft}>
                     <TouchableOpacity onPress={() => router.back()} style={transactionStyles.backButton}>
@@ -123,8 +125,14 @@ export default function TransactionScreen() {
                 {/* 3. RIGHT SIDE: CART SUMMARY */}
                 <View style={transactionStyles.cartSidebar}>
                     <View style={transactionStyles.cartHeader}>
-                        <Ionicons name="cart-outline" size={24} color={COLORS.navy} />
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <Ionicons name="cart-outline" size={24} color={COLORS.navy} />
                         <Text style={transactionStyles.cartTitle}>Current Order</Text>
+                        </View>
+                        
+                        <TouchableOpacity onPress={() => alert('Discount coming soon')} style={transactionStyles.discountBtn}>
+                            <Text style={{color: COLORS.white, fontWeight: '800'}}>Discount</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -180,6 +188,8 @@ export default function TransactionScreen() {
                     </View>
                 </View>
             </View>
+
+            {/* <DiscountModal */}
         </SafeAreaView>
     );
 }

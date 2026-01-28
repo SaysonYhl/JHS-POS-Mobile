@@ -25,13 +25,13 @@ export const transactionStyles = StyleSheet.create({
     // COMPACT PRODUCT CARDS
     productButton: { 
         flex: 1, 
-        margin: 5, // Smaller margin
-        padding: 12, // Reduced padding from 20
+        margin: 5,
+        padding: 12,
         backgroundColor: COLORS.white, 
         borderRadius: 12, 
         borderWidth: 1, 
         borderColor: COLORS.grayBorder, 
-        alignItems: 'flex-start', // Align left for better scanning
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
         minHeight: 110, 
     },
@@ -42,8 +42,8 @@ export const transactionStyles = StyleSheet.create({
 
     // COMPACT CART
     cartSidebar: { flex: 1, backgroundColor: COLORS.white, borderLeftWidth: 1, borderLeftColor: COLORS.grayBorder, padding: 15 },
-    cartHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 15 },
-    cartTitle: { fontSize: 18, fontWeight: '800', marginLeft: 8, color: COLORS.navy },
+    cartHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 15, justifyContent: 'space-between' },
+    cartTitle: { fontSize: 18, fontWeight: '800', marginLeft: 8, color: COLORS.navy},
     cartItem: { 
         paddingVertical: 8,
         borderBottomWidth: 1, 
@@ -52,6 +52,7 @@ export const transactionStyles = StyleSheet.create({
     },
     cartItemName: { fontSize: 14, fontWeight: '600', color: COLORS.navy },
     cartItemPrice: { fontSize: 12, color: COLORS.grayText },
+    discountBtn: {flexDirection: 'row', alignItems: 'center', paddingVertical: 7, paddingHorizontal: 15, backgroundColor: COLORS.warningOrange, borderRadius: 30},
     
     qtyControls: { 
         flexDirection: 'row', 
