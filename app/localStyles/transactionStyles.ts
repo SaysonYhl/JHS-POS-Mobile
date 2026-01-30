@@ -52,7 +52,7 @@ export const transactionStyles = StyleSheet.create({
     },
     cartItemName: { fontSize: 14, fontWeight: '600', color: COLORS.navy },
     cartItemPrice: { fontSize: 12, color: COLORS.grayText },
-    discountBtn: {flexDirection: 'row', alignItems: 'center', paddingVertical: 7, paddingHorizontal: 15, backgroundColor: COLORS.warningOrange, borderRadius: 30},
+    discountBtn: {flexDirection: 'row', alignItems: 'center', paddingVertical: 7, paddingHorizontal: 15, backgroundColor: COLORS.mediumBlue, borderRadius: 7},
     
     qtyControls: { 
         flexDirection: 'row', 

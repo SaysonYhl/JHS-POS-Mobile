@@ -3,9 +3,10 @@ import { View, Text, TouchableOpacity, ScrollView, TextInput, StyleSheet, FlatLi
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStyles, COLORS } from '@/constants/theme';
-import { getProducts } from '@/database/db';
+import { getProducts, updateStockwithTransaction } from '@/database/db';
 import { useRouter } from 'expo-router';
 import { transactionStyles } from './localStyles/transactionStyles';
+import DiscountModal from './components/DiscountModal';
 
 export default function TransactionScreen() {
     const router = useRouter();
@@ -13,6 +14,7 @@ export default function TransactionScreen() {
     const [cart, setCart] = useState<any[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [discount, setDiscount] = useState(0);
+    const [isDiscountModalVisible, setIsDiscountModalVisible] = useState(false);
 
     useEffect(() => {
         loadProducts();
@@ -58,12 +60,38 @@ export default function TransactionScreen() {
         setCart(prev => prev.filter(item => item.id !== productId));
     };
 
-    const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    // const finalTotal = Math.max(0, subtotal - discount);
+    // total amount calculation
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const totalAmount = Math.max(0, 0, subtotal - discount); //prevent negative totals
 
     const filteredProducts = products.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const handleProceed = async () => {
+        try {
+            // update stock in db
+            await updateStockwithTransaction(cart);
+
+            // prepare data for receipt
+            const receiptData = {
+                items: JSON.stringify(cart),
+                subtotal: subtotal,
+                discount: discount,
+                total: totalAmount,
+                date: new Date().toISOString(),
+            };
+
+            // redirect to receipt page
+            router.push({
+                pathname: "/receipt",
+                params: receiptData
+            });
+        } catch (error) {
+            console.error("Transaction failed:", error);
+            alert("Failed to update stock. Please try again.");
+        }
+    }
 
     return (
         <SafeAreaView style={transactionStyles.container} edges={['bottom']}>
@@ -125,13 +153,13 @@ export default function TransactionScreen() {
                 {/* 3. RIGHT SIDE: CART SUMMARY */}
                 <View style={transactionStyles.cartSidebar}>
                     <View style={transactionStyles.cartHeader}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Ionicons name="cart-outline" size={24} color={COLORS.navy} />
-                        <Text style={transactionStyles.cartTitle}>Current Order</Text>
+                            <Text style={transactionStyles.cartTitle}>Current Order</Text>
                         </View>
-                        
-                        <TouchableOpacity onPress={() => alert('Discount coming soon')} style={transactionStyles.discountBtn}>
-                            <Text style={{color: COLORS.white, fontWeight: '800'}}>Discount</Text>
+
+                        <TouchableOpacity onPress={() => setIsDiscountModalVisible(true)} style={transactionStyles.discountBtn}>
+                            <Text style={{ color: COLORS.white, fontWeight: '800' }}>Discount</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -173,7 +201,7 @@ export default function TransactionScreen() {
                         )}
                     </ScrollView>
 
-                    {/* FOOTER: TOTAL & CHECKOUT */}
+                    {/* TOTAL & CHECKOUT */}
                     <View style={transactionStyles.cartFooter}>
                         <View style={transactionStyles.totalRow}>
                             <Text style={transactionStyles.totalLabel}>Total Amount</Text>
@@ -181,7 +209,7 @@ export default function TransactionScreen() {
                         </View>
                         <TouchableOpacity
                             style={[transactionStyles.checkoutBtn, { backgroundColor: cart.length === 0 ? COLORS.grayBorder : COLORS.mediumBlue }]}
-                            disabled={cart.length === 0}
+                            disabled={cart.length === 0} onPress={handleProceed}
                         >
                             <Text style={transactionStyles.checkoutText}>PROCEED</Text>
                         </TouchableOpacity>
@@ -189,7 +217,14 @@ export default function TransactionScreen() {
                 </View>
             </View>
 
-            {/* <DiscountModal */}
+            {/* DISCOUNT MODAL */}
+            <DiscountModal
+                isVisible={isDiscountModalVisible}
+                onClose={() => setIsDiscountModalVisible(false)}
+                subtotal={subtotal}
+                discount={discount}
+                setDiscount={setDiscount}
+            />
         </SafeAreaView>
     );
 }

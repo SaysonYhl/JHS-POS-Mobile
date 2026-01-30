@@ -18,7 +18,7 @@ export const initDatabase = async () => {
                 imageUri TEXT
                 );
             `);
-            console.log("Database initialized successfully.");
+        console.log("Database initialized successfully.");
     } catch (error) {
         console.error("Error initializing database:", error);
     }
@@ -66,6 +66,26 @@ export const updateProduct = async (id: number, name: string, price: number, sto
         )
     } catch (error) {
         console.error("Error updating product:", error);
+    }
+};
+
+// update stock quantity based on transaction
+export const updateStockwithTransaction = async (cartItems: any[]) => {
+
+    try {
+        await db.withTransactionAsync(async () => {
+            for (const item of cartItems) {
+                await db.runAsync(
+                    'UPDATE products SET stock = stock - ? WHERE id = ?',
+                    [item.quantity, item.id]
+                );
+            }
+        });
+        console.log("Transaction successful");
+        return true;
+    } catch (error) {
+        console.error("Transaction failed:", error);
+        throw error;
     }
 };
 
