@@ -53,7 +53,7 @@ export default function TabLayout() {
                 name="inventory"
                 options={{
                     title: 'Inventory',
-                    headerTitle: 'Product Management',
+                    headerTitle: 'Inventory Management',
                     tabBarIcon: ({ color }) => <Ionicons name="cube" size={28} color={color} />
                 }}
             />
@@ -63,7 +63,7 @@ export default function TabLayout() {
                 name="history"
                 options={{
                     title: 'History',
-                    headerTitle: 'Transaction Records',
+                    headerTitle: 'Transaction History',
                     tabBarIcon: ({ color }) => <Ionicons name="receipt" size={28} color={color} />,
                 }}
             />
