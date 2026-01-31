@@ -9,10 +9,10 @@ export default function RootLayout() {
 
     return (
         <Stack>
-            {/* This hides the header for the tabs (Dashboard, Inventory) */}
+            {/* hides header in dashboard and inventory */}
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-            {/* This hides the default header for your new transaction screen */}
+            {/* hides default header for new transaction screen */}
             <Stack.Screen
                 name="transaction"
                 options={{

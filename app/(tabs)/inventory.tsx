@@ -28,14 +28,6 @@ export default function InventoryScreen() {
     const [weightUnit, setWeightUnit] = useState('');
 
     const loadInventory = async () => {
-        // WEB MOCK DATA Logic
-        if (Platform.OS === 'web') {
-            setProducts([
-                { id: 1, name: 'Sample Coke', price: 25, stock: 10, weightValue: '330', weightUnit: 'ml' },
-                { id: 2, name: 'Bread', price: 50, stock: 2, weightValue: '500', weightUnit: 'g' }
-            ]);
-            return;
-        }
         const data = await getProducts();
         setProducts(data);
     };

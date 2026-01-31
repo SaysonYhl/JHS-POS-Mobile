@@ -19,7 +19,7 @@ export default function DiscountModal({ isVisible, onClose, subtotal, discount, 
                 <View style={styles.content}>
                     <Text style={styles.title}>Add Discount</Text>
 
-                    {/* MATH SECTION */}
+                    {/* calculation */}
                     <View style={styles.mathContainer}>
                         <View style={styles.mathRow}>
                             <Text style={styles.label}>Current Total:</Text>

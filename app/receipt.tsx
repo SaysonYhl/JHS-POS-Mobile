@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, BackHandler } from 'react-native';
-import { useLocalSearchParams, useRouter, Stack } from 'expo-router'; // Added Stack
+import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import { COLORS } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ReceiptScreen() {
     const params = useLocalSearchParams();
     const router = useRouter();
-    
+
     const items = JSON.parse(params.items as string);
 
-    // Prevent Android hardware back button from working
+    // prevent mobile back button by working
     useEffect(() => {
         const backAction = () => {
-            return true; 
+            return true;
         };
 
         const backHandler = BackHandler.addEventListener(
@@ -26,15 +26,15 @@ export default function ReceiptScreen() {
 
     return (
         <View style={styles.container}>
-            {/* 1. HIDE THE TOP NAVIGATION BAR */}
+            {/* hide the top navigation bar*/}
             <Stack.Screen options={{ headerShown: false, gestureEnabled: false }} />
 
             <View style={styles.receiptCard}>
                 <Ionicons name="checkmark-circle" size={60} color="#10b981" style={{ alignSelf: 'center' }} />
                 <Text style={styles.successText}>Transaction Successful</Text>
-                
+
                 <View style={styles.divider} />
-                
+
                 <ScrollView style={styles.itemsList}>
                     {items.map((item: any) => (
                         <View key={item.id} style={styles.itemRow}>
@@ -48,13 +48,16 @@ export default function ReceiptScreen() {
 
                 <View style={styles.totalSection}>
                     <View style={styles.mathRow}><Text>Subtotal:</Text><Text>₱{parseFloat(params.subtotal as string).toFixed(2)}</Text></View>
-                    <View style={styles.mathRow}><Text>Discount:</Text><Text style={{color: COLORS.dangerRed}}>-₱{parseFloat(params.discount as string).toFixed(2)}</Text></View>
+                    {/* only show discount row if discount is applied */}
+                    {parseFloat(params.discount as string) > 0 && (
+                        <View style={styles.mathRow}><Text>Discount:</Text><Text style={{ color: COLORS.dangerRed }}>-₱{parseFloat(params.discount as string).toFixed(2)}</Text></View>
+                    )}
                     <View style={styles.mathRow}><Text style={styles.grandTotalLabel}>Total Paid:</Text><Text style={styles.grandTotalValue}>₱{parseFloat(params.total as string).toFixed(2)}</Text></View>
                 </View>
 
-                {/* 2. ONLY NAVIGATION POINT */}
-                <TouchableOpacity 
-                    style={styles.doneButton} 
+                {/* can only navigate back using "done" button */}
+                <TouchableOpacity
+                    style={styles.doneButton}
                     onPress={() => router.replace('/(tabs)')}
                 >
                     <Text style={styles.doneButtonText}>Done</Text>
@@ -66,7 +69,7 @@ export default function ReceiptScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#f1f5f9', justifyContent: 'center', padding: 20, alignItems: 'center' },
-    receiptCard: { backgroundColor: 'white', borderRadius: 20, padding: 25, elevation: 5, width: '50%' },
+    receiptCard: { backgroundColor: 'white', borderRadius: 20, padding: 25, elevation: 5, width: '60%' },
     successText: { fontSize: 20, fontWeight: '800', textAlign: 'center', color: COLORS.navy, marginTop: 10 },
     divider: { height: 1, backgroundColor: '#e2e8f0', marginVertical: 20, borderStyle: 'dashed' },
     itemsList: { maxHeight: 300 },

@@ -22,7 +22,7 @@ export const transactionStyles = StyleSheet.create({
     searchBar: { flex: 0.6, height: 40, backgroundColor: '#f1f5f9', borderRadius: 8, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, borderWidth: 1, borderColor: COLORS.grayBorder },
     searchInput: { flex: 1, marginLeft: 8, fontSize: 14, color: COLORS.navy },
     
-    // COMPACT PRODUCT CARDS
+    // product cards
     productButton: { 
         flex: 1, 
         margin: 5,
@@ -40,7 +40,7 @@ export const transactionStyles = StyleSheet.create({
     productPrice: { fontSize: 16, fontWeight: '900', color: COLORS.mediumBlue, marginTop: 4 },
     stockBadge: { marginTop: 6, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 },
 
-    // COMPACT CART
+    // cart
     cartSidebar: { flex: 1, backgroundColor: COLORS.white, borderLeftWidth: 1, borderLeftColor: COLORS.grayBorder, padding: 15 },
     cartHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 15, justifyContent: 'space-between' },
     cartTitle: { fontSize: 18, fontWeight: '800', marginLeft: 8, color: COLORS.navy},
@@ -66,7 +66,7 @@ export const transactionStyles = StyleSheet.create({
     qtyText: { fontSize: 14, fontWeight: '700', color: COLORS.navy, marginHorizontal: 12 },
     removeBtn: { padding: 6, backgroundColor: '#fff1f2', borderRadius: 6 },
 
-    // FOOTER
+    // footer
     cartFooter: { paddingTop: 15, borderTopWidth: 2, borderTopColor: '#f1f5f9' },
     totalRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
     totalLabel: { fontSize: 14, color: COLORS.grayText },

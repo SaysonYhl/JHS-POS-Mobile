@@ -68,10 +68,10 @@ export default function TransactionScreen() {
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleProceed = async () => {
+    const handleCheckout = async () => {
         try {
             // update stock in db
-            await updateStockwithTransaction(cart);
+            await updateStockwithTransaction(cart, totalAmount, discount);
 
             // prepare data for receipt
             const receiptData = {
@@ -87,6 +87,10 @@ export default function TransactionScreen() {
                 pathname: "/receipt",
                 params: receiptData
             });
+
+            // clear cart after save
+            setCart([]);
+            setDiscount(0);
         } catch (error) {
             console.error("Transaction failed:", error);
             alert("Failed to update stock. Please try again.");
@@ -95,7 +99,7 @@ export default function TransactionScreen() {
 
     return (
         <SafeAreaView style={transactionStyles.container} edges={['bottom']}>
-            {/* 1. HEADER */}
+            {/* header */}
             <View style={transactionStyles.header}>
                 <View style={transactionStyles.headerLeft}>
                     <TouchableOpacity onPress={() => router.back()} style={transactionStyles.backButton}>
@@ -124,7 +128,7 @@ export default function TransactionScreen() {
             </View>
 
             <View style={{ flex: 1, flexDirection: 'row' }}>
-                {/* 2. LEFT SIDE: PRODUCT SELECTION */}
+                {/* product selection panel */}
                 <View style={{ flex: 2.2, padding: 15 }}>
                     <FlatList
                         data={filteredProducts}
@@ -150,7 +154,7 @@ export default function TransactionScreen() {
                     />
                 </View>
 
-                {/* 3. RIGHT SIDE: CART SUMMARY */}
+                {/* cart summary panel */}
                 <View style={transactionStyles.cartSidebar}>
                     <View style={transactionStyles.cartHeader}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -178,7 +182,7 @@ export default function TransactionScreen() {
                                     </View>
 
                                     <View style={transactionStyles.qtyControls}>
-                                        {/* LEFT GROUP: Minus, Qty, Plus */}
+                                        {/* minus, quantity, and plus */}
                                         <View style={transactionStyles.qtyGrp}>
                                             <TouchableOpacity onPress={() => updateQuantity(item.id, -1)} style={transactionStyles.qtyBtn}>
                                                 <Ionicons name="remove" size={16} color={COLORS.navy} />
@@ -191,7 +195,7 @@ export default function TransactionScreen() {
                                             </TouchableOpacity>
                                         </View>
 
-                                        {/* RIGHT SIDE: Delete */}
+                                        {/* remove item from cart button */}
                                         <TouchableOpacity onPress={() => removeFromCart(item.id)} style={transactionStyles.removeBtn}>
                                             <Ionicons name="trash-outline" size={18} color={COLORS.dangerRed} />
                                         </TouchableOpacity>
@@ -201,7 +205,7 @@ export default function TransactionScreen() {
                         )}
                     </ScrollView>
 
-                    {/* TOTAL & CHECKOUT */}
+                    {/* total amount and checkout button */}
                     <View style={transactionStyles.cartFooter}>
                         <View style={transactionStyles.totalRow}>
                             <Text style={transactionStyles.totalLabel}>Total Amount</Text>
@@ -209,15 +213,15 @@ export default function TransactionScreen() {
                         </View>
                         <TouchableOpacity
                             style={[transactionStyles.checkoutBtn, { backgroundColor: cart.length === 0 ? COLORS.grayBorder : COLORS.mediumBlue }]}
-                            disabled={cart.length === 0} onPress={handleProceed}
+                            disabled={cart.length === 0} onPress={handleCheckout}
                         >
-                            <Text style={transactionStyles.checkoutText}>PROCEED</Text>
+                            <Text style={transactionStyles.checkoutText}>Checkout</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
 
-            {/* DISCOUNT MODAL */}
+            {/* discount modal */}
             <DiscountModal
                 isVisible={isDiscountModalVisible}
                 onClose={() => setIsDiscountModalVisible(false)}

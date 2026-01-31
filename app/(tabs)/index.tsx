@@ -13,7 +13,7 @@ export default function Dashboard() {
                 contentContainerStyle={GlobalStyles.tabletCenterWrapper}
             >
                 
-                {/* 1. NEW TRANSACTION CARD */}
+                {/* new transaction card */}
                 <View style={{ width: '100%', maxWidth: 900, marginBottom: 40 }}>
                     <TouchableOpacity 
                         style={GlobalStyles.primaryActionCard}
@@ -32,7 +32,7 @@ export default function Dashboard() {
                     </TouchableOpacity>
                 </View>
 
-                {/* 2. DAILY SUMMARY */}
+                {/* daily summary section */}
                 <View style={{ width: '100%', maxWidth: 900 }}>
                     <Text style={GlobalStyles.headerText}>
                         Daily Summary

@@ -5,6 +5,11 @@ const db = SQLite.openDatabaseSync('jhs-pos.db');
 
 export const initDatabase = async () => {
     try {
+        // force delete the old tables
+        // await db.execAsync(`DROP TABLE IF EXISTS sale_items;`);
+        // await db.execAsync(`DROP TABLE IF EXISTS sales;`);
+        // console.log("Database reset successfully.");
+
         // create products table if it doesn't exist
         await db.execAsync(`
             PRAGMA journal_mode = WAL;
@@ -16,7 +21,24 @@ export const initDatabase = async () => {
                 weightValue TEXT,
                 weightUnit TEXT,
                 imageUri TEXT
-                );
+            );
+
+            CREATE TABLE IF NOT EXISTS sales (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                total_amount REAL NOT NULL,
+                discount REAL NOT NULL,
+                date TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS sale_items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                sale_id INTEGER NOT NULL,
+                product_id INTEGER NOT NULL,
+                product_name TEXT NOT NULL,
+                quantity INTEGER NOT NULL,
+                price_at_sale REAL NOT NULL,
+                FOREIGN KEY (sale_id) REFERENCES sales (id)
+            );
             `);
         console.log("Database initialized successfully.");
     } catch (error) {
@@ -69,22 +91,34 @@ export const updateProduct = async (id: number, name: string, price: number, sto
     }
 };
 
-// update stock quantity based on transaction
-export const updateStockwithTransaction = async (cartItems: any[]) => {
-
+// save sale and update stock quantity
+export const updateStockwithTransaction = async (cartItems: any[], total: number, discount: number) => {
     try {
         await db.withTransactionAsync(async () => {
+            // record main sale
+            const saleResult = await db.runAsync(
+                'INSERT INTO sales (total_amount, discount, date) VALUES (?, ?, ?)',
+                [total, discount, new Date().toISOString()]
+            );
+            const saleId = saleResult.lastInsertRowId;
+
             for (const item of cartItems) {
+                // record each item in that sale
+                await db.runAsync(
+                    'INSERT INTO sale_items (sale_id, product_id, product_name, quantity, price_at_sale) VALUES (?, ?, ?, ?, ?)',
+                    [saleId, item.id, item.name, item.quantity, item.price]
+                );
+
+                // deduct stock quantity
                 await db.runAsync(
                     'UPDATE products SET stock = stock - ? WHERE id = ?',
                     [item.quantity, item.id]
                 );
             }
         });
-        console.log("Transaction successful");
         return true;
     } catch (error) {
-        console.error("Transaction failed:", error);
+        console.error("Failed to save sale:", error);
         throw error;
     }
 };
