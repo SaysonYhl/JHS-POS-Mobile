@@ -19,7 +19,7 @@ export const transactionStyles = StyleSheet.create({
     headerLeft: { flexDirection: 'row', alignItems: 'center' },
     backButton: { width: 40, height: 40, borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.1)', justifyContent: 'center', alignItems: 'center', marginRight: 15 },
     headerTitle: { fontSize: 24, fontWeight: '800', color: COLORS.white },
-    searchBar: { flex: 0.6, height: 40, backgroundColor: '#f1f5f9', borderRadius: 8, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, borderWidth: 1, borderColor: COLORS.grayBorder },
+    searchBar: { flex: 0.5, height: 40, backgroundColor: '#f1f5f9', borderRadius: 8, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, borderWidth: 1, borderColor: COLORS.grayBorder },
     searchInput: { flex: 1, marginLeft: 8, fontSize: 14, color: COLORS.navy },
     
     // product cards
@@ -33,7 +33,7 @@ export const transactionStyles = StyleSheet.create({
         borderColor: COLORS.grayBorder, 
         alignItems: 'flex-start',
         justifyContent: 'space-between',
-        minHeight: 110, 
+        minHeight: 90, 
     },
     productName: { fontSize: 14, fontWeight: '700', color: COLORS.navy, textAlign: 'left' },
     productWeight: { fontSize: 11, color: COLORS.grayText },

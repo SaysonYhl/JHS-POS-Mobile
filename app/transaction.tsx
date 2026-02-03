@@ -21,14 +21,6 @@ export default function TransactionScreen() {
     }, []);
 
     const loadProducts = async () => {
-        if (Platform.OS === 'web') {
-            setProducts([
-                { id: 1, name: 'Arizona Iced Tea', price: 55, stock: 12, weightValue: '500', weightUnit: 'ml' },
-                { id: 2, name: 'Skyflakes Cracker', price: 10, stock: 3, weightValue: '25', weightUnit: 'g' },
-                { id: 3, name: 'Coke Zero', price: 35, stock: 20, weightValue: '330', weightUnit: 'ml' },
-            ]);
-            return;
-        }
         const data = await getProducts();
         setProducts(data);
     };
@@ -66,6 +58,10 @@ export default function TransactionScreen() {
 
     const filteredProducts = products.filter(p =>
         p.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const sortedProducts = [...filteredProducts].sort((a, b) =>
+        a.name.localeCompare(b.name)
     );
 
     const handleCheckout = async () => {
@@ -106,7 +102,7 @@ export default function TransactionScreen() {
                         <Ionicons name="arrow-back" size={28} color={COLORS.white} />
                     </TouchableOpacity>
                     <View>
-                        <Text style={transactionStyles.headerTitle}>New Transaction</Text>
+                        <Text style={transactionStyles.headerTitle}>NEW TRANSACTION</Text>
                     </View>
                 </View>
 
@@ -129,10 +125,11 @@ export default function TransactionScreen() {
 
             <View style={{ flex: 1, flexDirection: 'row' }}>
                 {/* product selection panel */}
-                <View style={{ flex: 2.2, padding: 15 }}>
+                <View style={{ flex: 2.7, padding: 15 }}>
                     <FlatList
-                        data={filteredProducts}
-                        numColumns={4}
+                        key={5}
+                        data={sortedProducts}
+                        numColumns={5}
                         keyExtractor={(item) => item.id.toString()}
                         contentContainerStyle={{ paddingBottom: 50 }}
                         renderItem={({ item }) => (
@@ -144,11 +141,11 @@ export default function TransactionScreen() {
                                 <Text style={transactionStyles.productName} numberOfLines={1}>{item.name}</Text>
                                 <Text style={transactionStyles.productWeight}>{item.weightValue} {item.weightUnit}</Text>
                                 <Text style={transactionStyles.productPrice}>₱{parseFloat(item.price).toFixed(2)}</Text>
-                                <View style={[transactionStyles.stockBadge, { backgroundColor: item.stock < 5 ? '#fee2e2' : '#f1f5f9' }]}>
+                                {/* <View style={[transactionStyles.stockBadge, { backgroundColor: item.stock < 5 ? '#fee2e2' : '#f1f5f9' }]}>
                                     <Text style={{ fontSize: 11, fontWeight: '700', color: item.stock < 5 ? COLORS.dangerRed : COLORS.grayText }}>
                                         {item.stock <= 0 ? "OUT OF STOCK" : `STOCK: ${item.stock}`}
                                     </Text>
-                                </View>
+                                </View> */}
                             </TouchableOpacity>
                         )}
                     />

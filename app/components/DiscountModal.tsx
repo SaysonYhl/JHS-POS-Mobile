@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 interface DiscountModalProps {
     isVisible: boolean;
@@ -18,6 +19,10 @@ export default function DiscountModal({ isVisible, onClose, subtotal, discount, 
             <View style={styles.overlay}>
                 <View style={styles.content}>
                     <Text style={styles.title}>Add Discount</Text>
+
+                    <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                            <Ionicons name="close-circle" size={35} color={COLORS.dangerRed} />
+                        </TouchableOpacity>
 
                     {/* calculation */}
                     <View style={styles.mathContainer}>
@@ -56,7 +61,9 @@ export default function DiscountModal({ isVisible, onClose, subtotal, discount, 
 const styles = StyleSheet.create({
     overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center' },
     content: { width: 350, backgroundColor: 'white', borderRadius: 20, padding: 25, elevation: 10 },
+    header: {width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 10, position: "relative" },
     title: { fontSize: 22, fontWeight: '900', color: COLORS.navy, marginBottom: 20, textAlign: 'center' },
+    closeButton: { position: 'absolute', right: 13, top: 10 },
     mathContainer: { backgroundColor: '#f8fafc', padding: 15, borderRadius: 12, marginBottom: 20 },
     mathRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
     inputRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15, borderBottomWidth: 1, borderBottomColor: '#e2e8f0', paddingBottom: 10 },
